@@ -55,8 +55,8 @@ for search in config['search']:
                 trakt_items['movies'].append({'ids': {'imdb': guid.netloc}})
             elif 'themoviedb' in guid.scheme:
                 trakt_items['movies'].append({'ids': {'tmdb': guid.netloc}})
-            else:
-                log.warning("Unknown agent for %s. Skipping.") % item.title
+            #else:
+                #log.warning("Unknown agent for %s. Skipping.") % item.title
     elif plex_library.type == 'show':
         tvdb_ids = []
         trakt_items = {'shows': []}
@@ -66,8 +66,8 @@ for search in config['search']:
                 trakt_items['shows'].append({'ids': {'tvdb': guid.netloc}})
             elif 'themoviedb' in guid.scheme:
                 trakt_items['shows'].append({'ids': {'tmdb': guid.netloc}})
-            else:
-                log.warning("Unknown agent for %s. Skipping.") % item.title
+            #else:
+                #log.warning("Unknown agent for %s. Skipping.") % item.title
     if trakt_list_name not in [lst.name for lst in Trakt['users/*/lists'].get(trakt_username)]:
         Trakt['users/*/lists'].create(trakt_username, trakt_list_name)
     else:
