@@ -33,7 +33,7 @@ else:
     p = Trakt['oauth/device'].poll(**code_response)
     while time.time() - polling_start < polling_expire:
         #try token
-        token_response = Trakt['oauth/device'].token(code_resp['device_code'])
+        token_response = Trakt['oauth/device'].token(code_response['device_code'])
         if token_response:
             p.stop()
             break
@@ -68,7 +68,6 @@ for search in config['search']:
                 trakt_items['shows'].append({'ids': {'tmdb': guid.netloc}})
             else:
                 log.warning("Unknown agent for %s. Skipping.") % item.title
-    print trakt_items 
     if trakt_list_name not in [lst.name for lst in Trakt['users/*/lists'].get(trakt_username)]:
         Trakt['users/*/lists'].create(trakt_username, trakt_list_name)
     else:
