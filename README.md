@@ -1,2 +1,2 @@
 # plex2trakt
-Create Trakt lists from Plex libraries
+Export Plex libraries to Trakt lists

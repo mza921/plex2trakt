@@ -1,0 +1,43 @@
+---
+trakt:
+  username: ''
+  client_id: ''
+  client_secret: ''
+  access_token: '' # Add this after initial run
+plex:
+  baseurl: 'http://localhost:32400'
+  token: ''
+search:
+  - trakt_list_name: 'plex_kids_movies'
+    source_library: 'Movies'
+    filters:
+      genre:
+        - 'family'
+        - 'animation'
+      contentRating:
+        - 'G'
+        - 'PG'
+  - trakt_list_name: 'plex_2018_movies'
+    source_library: 'Movies'
+    filters:
+      year: '2018'
+  - trakt_list_name: 'plex_2000s_movies'
+    source_library: 'Movies'
+    filters:
+      decade: '2000'
+  - trakt_list_name: 'plex_kids_shows'
+    source_library: 'TV Shows'
+    filters:
+      genre:
+        - 'family'
+        - 'animation'
+      contentRating:
+        - 'TV-G'
+        - 'TV-PG'
+        - 'TV-Y'
+        - 'TV-Y7'
+  - trakt_list_name: 'plex_collection1'
+    source_library: 'Movies'
+    filter_type: 'plex'
+    filters:
+      collection: 'collection1'
