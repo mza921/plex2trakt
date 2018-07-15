@@ -39,6 +39,7 @@ else:
             break
         time.sleep(code_response['interval'])
     Trakt.configuration.defaults.oauth.from_response(token_response)
+    print 'Manually add trakt access_token %(access_token)s to your config.yml' % token_response
 
 trakt_username = config['trakt']['username']
 plex = PlexServer(config['plex']['baseurl'], config['plex']['token'])
