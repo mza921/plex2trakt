@@ -38,6 +38,5 @@ search:
         - 'TV-Y7'
   - trakt_list_name: 'plex_collection1'
     source_library: 'Movies'
-    filter_type: 'plex'
     filters:
       collection: 'collection1'
