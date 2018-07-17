@@ -32,7 +32,9 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
     `token:`    See [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
 3. Create desired filters. See `config.yml-template` for examples.
 ## Usage
-`env/bin/python plex2trakt`
+From the plex2trakt directory,  
+`env/bin/python plex2trakt`  
+  
 On the initial run, follow the prompt to authorize the application.
 ## Examples
 *Coming soon*
