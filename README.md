@@ -34,6 +34,7 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
 ## Usage
 From the plex2trakt directory,  
 `env/bin/python plex2trakt`  
+  
 On the initial run, follow the prompt to authorize the application.
 ## Examples
 *Coming soon*
