@@ -40,3 +40,7 @@ search:
     source_library: Movies
     filters:
       collection: collection1
+  - trakt_list_name: plex_all_movies
+    source_library: Movies
+    filters:
+      title:
