@@ -1,4 +1,5 @@
 ---
+debug: false
 trakt:
   username:
   client_id:

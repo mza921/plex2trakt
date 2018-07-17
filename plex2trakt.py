@@ -10,14 +10,14 @@ import logging
 import ruamel.yaml
 import sys
 
-log_format = '%(asctime)s\t%(levelname)s\t%(module)s\t%(message)s'
-logging.basicConfig(format=log_format)
-log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
-
 config_file = 'config.yml'
 from ruamel.yaml.util import load_yaml_guess_indent
 config, ind, bsi = load_yaml_guess_indent(open(config_file))
+
+log_format = '%(asctime)s - %(levelname)-8s - %(module)-16s - %(message)s'
+logging.basicConfig(format=log_format)
+log = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG if config['debug'] else logging.INFO)
 
 Trakt.configuration.defaults.client(
     id = config['trakt']['client_id'],
@@ -125,4 +125,4 @@ for search in config['search']:
     
     log.info('%s: Adding items to list.' % trakt_list_name)
     Trakt['users/*/lists/*'].add(trakt_username, trakt_list_slug, trakt_items)
-    log.info('%s: List complete.' % trakt_list_name)
+    log.info('%s: List creation complete.' % trakt_list_name)
