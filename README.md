@@ -29,7 +29,7 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
     
     *Under `plex:`*  
     `baseurl:`  
-    `token:`    See [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
+    `token:` (See [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).)
 3. Create desired filters. See `config.yml-template` for examples.
 ## Usage
 From the plex2trakt directory,  
