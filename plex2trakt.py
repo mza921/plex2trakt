@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 from urlparse import urlparse
 from plexapi.server import PlexServer
@@ -89,18 +90,29 @@ for search in config['search']:
         trakt_items = {trakt_list_type: []}
         for item in plex_library.search(**search['filters']):
             guid = urlparse(item.guid)
-            log.debug('Adding: %s.' % item.title)
+            log.debug('Adding: %s' % item.title)
             # Looking for imdb, tmdb, or tvdb
             id_type = guid.scheme.split('.')[-1]
             if id_type in ('imdb', 'themoviedb', 'tvdb'):
                 trakt_items[trakt_list_type].append({'ids': {id_type: guid.netloc}})
             else:
                 log.warning("Unknown agent for %s. Skipping." % item.title)
+
+    # Create list if it doesn't exist
     if trakt_list_name not in [lst.name for lst in Trakt['users/*/lists'].get(trakt_username)]:
         log.info('%s: Creating list.' % trakt_list_name)
         Trakt['users/*/lists'].create(trakt_username, trakt_list_name)
 
-    log.info('%s: Adding items to list.' % trakt_list_name)
-    Trakt['users/*/lists/*'].add(trakt_username, trakt_list_name, trakt_items)
-    log.info('%s: List complete.' % trakt_list_name)
+    # Get list slug to allow future API calls
+    for lst in Trakt['users/*/lists'].get(trakt_username):
+        if lst.name == trakt_list_name:
+            for ids in lst.keys:
+                if ids[0] == 'slug':
+                    trakt_list_slug = ids[1]
+                    log.debug('List slug: %s' % trakt_list_slug)
+                    break
+            break
 
+    log.info('%s: Adding items to list.' % trakt_list_name)
+    Trakt['users/*/lists/*'].add(trakt_username, trakt_list_slug, trakt_items)
+    log.info('%s: List complete.' % trakt_list_name)
