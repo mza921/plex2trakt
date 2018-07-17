@@ -6,7 +6,7 @@ import json
 import time
 from trakt import Trakt
 import logging
-import yaml
+import ruamel.yaml
 import sys
 
 log_format = '%(asctime)s\t%(levelname)s\t%(module)s\t%(message)s'
@@ -14,8 +14,9 @@ logging.basicConfig(format=log_format)
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
 
-with open('config.yml', 'r') as f:
-    config = yaml.load(f)
+config_file = 'config.yml'
+from ruamel.yaml.util import load_yaml_guess_indent
+config, ind, bsi = load_yaml_guess_indent(open(config_file))
 
 Trakt.configuration.defaults.client(
     id = config['trakt']['client_id'],
@@ -38,13 +39,11 @@ else:
     p.start()
 
     # There's probably a better way to implement polling.
-    #while time.time() - polling_start < polling_expire:
     while not p.has_expired():
         # parse=False in order to retrieve status code and suppress log.WARNING
         token_response = Trakt['oauth/device'].token(code_response['device_code'], parse=False)
         if token_response.status_code == 200:
             p.stop()
-            print 'token_response', token_response
             break
         elif token_response.status_code == 400:
             log.debug('Waiting on authorization.')
@@ -68,7 +67,12 @@ else:
         log.error('Token expired. Aborting.')
         sys.exit()
     Trakt.configuration.defaults.oauth.from_response(token_response.json())
-    print 'Manually add trakt access_token %(access_token)s to your config.yml' % token_response.json()
+    log.info('Updating %s with OAuth access token.' % config_file)
+    config['trakt']['access_token'] = token_response.json()['access_token']
+    ruamel.yaml.round_trip_dump(config,
+                                open(config_file, 'w'), 
+                                indent=ind,
+                                block_seq_indent=bsi)
     raw_input("Press Enter to continue...")
 
 trakt_username = config['trakt']['username']
@@ -77,7 +81,6 @@ for search in config['search']:
     trakt_list_name = search['trakt_list_name']
     plex_library = plex.library.section(search['source_library'])
     log.info('%s: Gathering items from Plex.' % trakt_list_name)
-    #if plex_library.type == 'movie':
     if plex_library.type in ('movie', 'shows'):
         if plex_library.type == 'movie':
             trakt_list_type = 'movies'

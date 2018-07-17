@@ -1,2 +1,3 @@
 plexapi
+ruamel.yaml
 trakt.py
