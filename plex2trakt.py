@@ -113,6 +113,16 @@ for search in config['search']:
                     break
             break
 
+    if search['trakt_list_privacy'] in ('friends', 'public'):
+        # Public required if using Python-PlexLibrary
+        log.info('%s: Updating privacy mode.' % search['trakt_list_name'])
+        Trakt['users/*/lists/*'].update(trakt_username,
+                                        trakt_list_slug,
+                                        privacy=search['trakt_list_privacy']) 
+    else:
+        # Defaults to private
+        pass
+    
     log.info('%s: Adding items to list.' % trakt_list_name)
     Trakt['users/*/lists/*'].add(trakt_username, trakt_list_slug, trakt_items)
     log.info('%s: List complete.' % trakt_list_name)

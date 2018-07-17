@@ -9,6 +9,7 @@ plex:
   token:
 search:
   - trakt_list_name: plex_kids_movies
+    trakt_list_privacy: public
     source_library: Movies
     filters:
       genre:
@@ -18,14 +19,17 @@ search:
         - G
         - PG
   - trakt_list_name: plex_2018_movies
+    trakt_list_privacy: public
     source_library: Movies
     filters:
       year: 2018
   - trakt_list_name: plex_2000s_movies
+    trakt_list_privacy: public
     source_library: Movies
     filters:
       decade: 2000
   - trakt_list_name: plex_kids_shows
+    trakt_list_privacy: public
     source_library: TV Shows
     filters:
       genre:
@@ -37,10 +41,12 @@ search:
         - TV-Y
         - TV-Y7
   - trakt_list_name: plex_collection1
+    trakt_list_privacy: public
     source_library: Movies
     filters:
       collection: collection1
   - trakt_list_name: plex_all_movies
+    trakt_list_privacy: public
     source_library: Movies
     filters:
       title:
