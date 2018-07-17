@@ -16,6 +16,7 @@ search:
       genre:
         - family
         - animation
+        - children
       contentRating:
         - G
         - PG
