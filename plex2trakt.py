@@ -4,13 +4,14 @@
 from urlparse import urlparse
 from plexapi.server import PlexServer
 import json
+import os
 import time
 from trakt import Trakt
 import logging
 import ruamel.yaml
 import sys
 
-config_file = 'config.yml'
+config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yml')
 from ruamel.yaml.util import load_yaml_guess_indent
 config, ind, bsi = load_yaml_guess_indent(open(config_file))
 
