@@ -3,15 +3,13 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
 
 ## Requirements
 1. Python 2.7
-2. [virtualenv](https://virtualenv.pypa.io/en/stable/installation/), to avoid conflicts with the Trakt API used by Python-PlexLibrary
-3. requirements.txt modules
+2. requirements.txt modules
 
 ## Installation  
 #### 1. Base Install
 1.  `git clone https://github.com/mza921/plex2trakt`
 2. `cd plex2trakt`
-3. `virtualenv env`
-4. `env/bin/pip install -r requirements.txt`
+3. `env/bin/pip install -r requirements.txt`
 #### 2. Create a Trakt application
 1. [Create](https://trakt.tv/oauth/applications/new) a Trakt API application.
 2. Enter a `Name` for the application.
@@ -33,7 +31,7 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
 3. Create desired filters. See `config.yml-template` for examples.
 ## Usage
 From the plex2trakt directory,  
-`env/bin/python plex2trakt`  
+`python plex2trakt`  
   
 On the initial run, follow the prompt to authorize the application.
 ## Examples
