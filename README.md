@@ -1,5 +1,5 @@
 # plex2trakt
-Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used with [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary) to create dynamic Plex libraries.
+Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used with [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary) to create dynamic Plex libraries. Currently supports filtering based on either Plex or Trakt metadata.
 
 ## Requirements
 1. Python 2.7
