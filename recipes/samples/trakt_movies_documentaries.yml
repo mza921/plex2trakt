@@ -1,0 +1,7 @@
+name: trakt_movies_documentaries
+privacy: public
+source_library: Movies
+filter_source: trakt
+whitelist:
+  genres:
+    - documentary

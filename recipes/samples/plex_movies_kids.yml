@@ -1,0 +1,15 @@
+name: plex_movies_kids
+privacy: public
+source_library: Movies
+filter_source: plex
+whitelist:
+  genre:
+    - family
+    - animation
+  contentRating:
+    - G
+    - PG
+    - TV-G
+    - TV-PG
+    - TV-Y
+    - TV-Y7

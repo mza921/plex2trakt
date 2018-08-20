@@ -79,6 +79,16 @@ class Trakt:
         return r.json()
 
     @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    def delete_list(self, list_id):
+        url = 'https://api.trakt.tv/users/%s/lists/%s' % (self.username, list_id)
+        params = {'id': self.username}
+        #payload = {}
+        #r = requests.delete(url, params=params, json=payload, headers=self.headers())
+        r = requests.delete(url, params=params, headers=self.headers())
+        #return r.json()
+        return r
+
+    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
     def update_list_privacy(self, list_id, privacy):
         url = 'https://api.trakt.tv/users/%s/lists/%s' % (self.username, list_id)
         params = {'id': self.username}
@@ -100,4 +110,5 @@ class Trakt:
         url = 'https://api.trakt.tv/users/%s/lists/%s/items' % (self.username, list_id)
         params = {'id': self.username, 'list_id': list_id}
         r = requests.post(url, json=items, params=params, headers=self.headers())
-        return r.json()
+        #return r.json()
+        #return r.json()
