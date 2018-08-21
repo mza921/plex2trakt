@@ -3,9 +3,6 @@ import json
 import os
 import requests
 import ruamel.yaml
-import yaml
-from pprint import pprint
-
 
 class Trakt:
 
@@ -76,16 +73,13 @@ class Trakt:
             'privacy': privacy
         }
         r = requests.post(url, params=params, json=payload, headers=self.headers())
-        return r.json()
+        return r
 
     @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
     def delete_list(self, list_id):
         url = 'https://api.trakt.tv/users/%s/lists/%s' % (self.username, list_id)
         params = {'id': self.username}
-        #payload = {}
-        #r = requests.delete(url, params=params, json=payload, headers=self.headers())
         r = requests.delete(url, params=params, headers=self.headers())
-        #return r.json()
         return r
 
     @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
@@ -96,7 +90,7 @@ class Trakt:
             'privacy': privacy
         }
         r = requests.put(url, params=params, json=payload, headers=self.headers())
-        return r.json()
+        return r
 
     @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
     def get_list_items(self, list_id, list_type):
@@ -110,5 +104,4 @@ class Trakt:
         url = 'https://api.trakt.tv/users/%s/lists/%s/items' % (self.username, list_id)
         params = {'id': self.username, 'list_id': list_id}
         r = requests.post(url, json=items, params=params, headers=self.headers())
-        #return r.json()
-        #return r.json()
+        return r
