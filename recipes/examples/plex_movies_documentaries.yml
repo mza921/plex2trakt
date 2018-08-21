@@ -1,0 +1,7 @@
+name: plex_movies_documentaries
+privacy: public
+source_library: Movies
+filter_source: plex
+whitelist:
+  genre:
+    - documentary

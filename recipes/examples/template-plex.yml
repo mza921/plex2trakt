@@ -1,0 +1,70 @@
+# Name of Trakt list
+name: my_trakt_list
+
+# Privacy setting for the Trakt list
+# Possible values: public, private, or friend
+# Note: The plexlibrary application only works with 'public' lists
+privacy: public
+
+# Name of the Plex library to build the list from
+source_library: Movies
+
+# Source for filters
+# Possible values: plex, trakt, or tmdb
+# Note: Each source has a different set of acceptable whitelist/blacklist filters
+filter_source: plex
+
+# Filter type
+# Possible values: 'whitelist' (to include) or 'blacklist' (to exclude)
+# Values within a filter are logically OR'd, then each filter is logically AND'd
+whitelist:
+  actor:
+    - <actor_or_id> [movies only]
+  collection:
+    - <collection_or_id>
+  country:
+    - <country_or_key> [movies only]
+  decade:
+    - <yyy0> [movies only]
+  director:
+    - <director_or_id> [movies only]
+  genres:
+    - action
+    - adventure
+    - animation
+    - anime
+    - comedy
+    - crime
+    - disaster
+    - documentary
+    - drama
+    - eastern
+    - family
+    - fan-film
+    - fantasy
+    - film-noir
+    - history
+    - horror
+    - indie
+    - music
+    - musical
+    - mystery
+    - none
+    - road
+    - romance
+    - science-fiction
+    - short
+    - sports
+    - sporting-event
+    - suspense
+    - thriller
+    - tv-movie
+    - war
+    - western
+    - action
+  network:
+    - <network> [tv only]
+  resolution:
+    - <resolution> [movies only]
+  year:
+    - <yyyy>

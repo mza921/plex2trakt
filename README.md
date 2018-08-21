@@ -1,17 +1,15 @@
 # plex2trakt
-Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used with [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary) to create dynamic Plex libraries.
+Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used with [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary) to create dynamic Plex libraries. Currently supports filtering based on either Plex or Trakt metadata.
 
 ## Requirements
 1. Python 2.7
-2. [virtualenv](https://virtualenv.pypa.io/en/stable/installation/), to avoid conflicts with the Trakt API used by Python-PlexLibrary
-3. requirements.txt modules
+2. requirements.txt modules
 
 ## Installation  
 #### 1. Base Install
 1.  `git clone https://github.com/mza921/plex2trakt`
 2. `cd plex2trakt`
-3. `virtualenv env`
-4. `env/bin/pip install -r requirements.txt`
+3. `pip install -r requirements.txt`
 #### 2. Create a Trakt application
 1. [Create](https://trakt.tv/oauth/applications/new) a Trakt API application.
 2. Enter a `Name` for the application.
@@ -30,11 +28,14 @@ Export filtered Plex libraries to Trakt lists. The Trakt lists can then be used 
     *Under `plex:`*  
     `baseurl:`  
     `token:` (See [here](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).)
-3. Create desired filters. See `config.yml-template` for examples.
+3. Create desired recipes. See `recipes/examples` folder for ideas. Save in the `recipes` folder.
 ## Usage
 From the plex2trakt directory,  
-`env/bin/python plex2trakt`  
+`plex2trakt <recipe_name>` (without .yml extension)  
   
 On the initial run, follow the prompt to authorize the application.
 ## Examples
 *Coming soon*
+## Credits
+Use of "recipes" based on [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary).  
+Trakt interface based on [Traktarr](https://github.com/l3uddz/traktarr).

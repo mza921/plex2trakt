@@ -1,0 +1,7 @@
+name: plex_movies_2018
+privacy: public
+source_library: Movies
+filter_source: plex
+whitelist:
+  year:
+    - 2018

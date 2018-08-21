@@ -1,0 +1,14 @@
+name: plex_tv_kids
+privacy: public
+source_library: TV Shows
+filter_source: plex
+whitelist:
+  genre:
+    - family
+    - animation
+    - children
+  contentRating:
+    - TV-G
+    - TV-PG
+    - TV-Y
+    - TV-Y7
