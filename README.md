@@ -37,5 +37,5 @@ On the initial run, follow the prompt to authorize the application.
 ## Examples
 *Coming soon*
 ## Credits
-Use of "recipes" based on [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary)  
-Trakt interface based on [Traktarr](https://github.com/l3uddz/traktarr)
+Use of "recipes" based on [Python-PlexLibrary](https://github.com/adamgot/python-plexlibrary).  
+Trakt interface based on [Traktarr](https://github.com/l3uddz/traktarr).
