@@ -60,12 +60,24 @@ if plex_library.type in ('movie', 'show'):
         log.debug('Queuing: %s' % item.title)
         # Looking for imdb, tmdb, or thetvdb
         id_type = guid.scheme.split('.')[-1]
-        if id_type in ('imdb', 'themoviedb'):
-            trakt_items[list_type].append({'ids': {id_type: guid.netloc}})
-        elif id_type in ('thetvdb'):
-            trakt_items[list_type].append({'ids': {'tvdb': guid.netloc}})
+        if plex_library.type == 'movie':
+            if id_type == 'imdb':
+                trakt_items[list_type].append({'ids': {id_type: guid.netloc}})
+            elif id_type == 'themoviedb':
+                trakt_items[list_type].append({'ids': {'tmdb': guid.netloc}})
+            else:
+                log.warning("Unknown agent for %s. Skipping." % item.title)
+        elif plex_library.type == 'show':
+            if id_type in ('themoviedb'):
+                trakt_items[list_type].append({'ids': {'tmdb': guid.netloc}})
+            elif id_type in ('thetvdb'):
+                trakt_items[list_type].append({'ids': {'tvdb': guid.netloc}})
+            else:
+                log.warning("Unknown agent for %s. Skipping." % item.title)
         else:
-            log.warning("Unknown agent for %s. Skipping." % item.title)
+            log.warning("Unsupported library type for %s. Skipping." % item.title)
+    log.info('Plex items found: %d' % len(plex_items))
+    log.info('Trakt items to add: %d' % len(trakt_items[list_type]))
 
 # Create list if it doesn't exist
 if list_name not in [trakt_list['name'] for trakt_list in t.get_lists()]:
