@@ -90,14 +90,6 @@ for trakt_list in t.get_lists():
         trakt_list_slug = trakt_list['ids']['slug']
         break
 
-if recipe['privacy'] in ('friends', 'public'):
-    # Public required if using Python-PlexLibrary
-    log.info('%s: Updating privacy mode.' % list_name)
-    t.update_list_privacy(trakt_list_slug, privacy=recipe['privacy'])
-else:
-    # Defaults to private
-    pass
-
 if recipe['filter_source'] == 'plex':
     log.info('%s: Adding items to list.' % list_name)
 else:
@@ -135,6 +127,14 @@ if recipe['filter_source'] == 'trakt':
     t.create_list(list_name)
     log.info('%s: Adding filtered items to list.' % list_name)
     t.add_list_items(trakt_list_slug, final_post)
+
+if recipe['privacy'] in ('friends', 'public'):
+    # Public required if using Python-PlexLibrary
+    log.info('%s: Updating privacy mode.' % list_name)
+    t.update_list_privacy(trakt_list_slug, privacy=recipe['privacy'])
+else:
+    # Defaults to private
+    pass
 
 list_size = len(t.get_list_items(trakt_list_slug, list_type))
 log.info('%s: List creation complete (%d %s items).' % (list_name, list_size, item_type))
