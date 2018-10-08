@@ -1,9 +1,0 @@
-name: trakt_movies_foreign
-privacy: public
-source_library: Movies
-filter_source: trakt
-blacklist:
-  language:
-    - en
-  country:
-    - us
