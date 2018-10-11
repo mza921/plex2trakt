@@ -80,7 +80,7 @@ class Trakt:
             'name': list_name,
             'privacy': privacy
         }
-        r = requests.post(url, params=params, json=payload, headers=self.headers(), on_backoff=backoff_handler)
+        r = requests.post(url, params=params, json=payload, headers=self.headers())
         if r.status_code == 201:
             return r.json()
         else:
@@ -118,7 +118,7 @@ class Trakt:
             return r.json()
         else:
             return None
-    
+
     @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def add_list_items(self, list_id, items):
         url = 'https://api.trakt.tv/users/%s/lists/%s/items' % (self.username, list_id)
