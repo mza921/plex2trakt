@@ -28,6 +28,11 @@ class Trakt:
             'Authorization': 'Bearer %s' % self.access_token
         }
 
+    def backoff_handler(details):
+        print("Backing off {wait:0.1f} seconds afters {tries} tries "
+              "calling function {target} with args {args} and kwargs "
+              "{kwargs}".format(**details))
+
     def generate_device_code(self):
         url = 'https://api.trakt.tv/oauth/device/code'
         payload = {'client_id': self.client_id}
@@ -35,7 +40,7 @@ class Trakt:
         print 'Go to %(verification_url)s and enter %(user_code)s' % r.json()
         return r
 
-    @backoff.on_predicate(backoff.constant, lambda x: x.status_code == 400, interval=5)
+    @backoff.on_predicate(backoff.constant, lambda x: x.status_code == 400, interval=5, on_backoff=backoff_handler)
     def poll_for_access_token(self):
         url = 'https://api.trakt.tv/oauth/device/token'
         payload = {
@@ -57,14 +62,17 @@ class Trakt:
             block_seq_indent=bsi
         )
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def get_lists(self):
         url = 'https://api.trakt.tv/users/%s/lists' % self.username
         params = {'id': self.username}
         r = requests.get(url, params=params, headers=self.headers())
-        return r.json()
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def create_list(self, list_name, privacy='private'):
         url = 'https://api.trakt.tv/users/%s/lists' % self.username
         params = {'id': self.username}
@@ -73,16 +81,22 @@ class Trakt:
             'privacy': privacy
         }
         r = requests.post(url, params=params, json=payload, headers=self.headers())
-        return r
+        if r.status_code == 201:
+            return r.json()
+        else:
+            return None
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def delete_list(self, list_id):
         url = 'https://api.trakt.tv/users/%s/lists/%s' % (self.username, list_id)
         params = {'id': self.username}
         r = requests.delete(url, params=params, headers=self.headers())
-        return r
+        if r.status_code == 204:
+            return r.json()
+        else:
+            return None
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def update_list_privacy(self, list_id, privacy):
         url = 'https://api.trakt.tv/users/%s/lists/%s' % (self.username, list_id)
         params = {'id': self.username}
@@ -90,18 +104,27 @@ class Trakt:
             'privacy': privacy
         }
         r = requests.put(url, params=params, json=payload, headers=self.headers())
-        return r
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def get_list_items(self, list_id, list_type):
         url = 'https://api.trakt.tv/users/%s/lists/%s/items/%s' % (self.username, list_id, list_type)
         params = {'id': self.username, 'list_id': list_id, 'type': list_type, 'extended': 'full'}
         r = requests.get(url, params=params, headers=self.headers())
-        return r.json()
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return None
 
-    @backoff.on_exception(backoff.expo, requests.exceptions.RequestException, max_tries=5)
+    @backoff.on_predicate(backoff.expo, lambda x: x is None, max_tries=5, on_backoff=backoff_handler)
     def add_list_items(self, list_id, items):
         url = 'https://api.trakt.tv/users/%s/lists/%s/items' % (self.username, list_id)
         params = {'id': self.username, 'list_id': list_id}
         r = requests.post(url, json=items, params=params, headers=self.headers())
-        return r
+        if r.status_code in (200, 201):
+            return r.json()
+        else:
+            return None
