@@ -40,7 +40,7 @@ class Trakt:
         print 'Go to %(verification_url)s and enter %(user_code)s' % r.json()
         return r
 
-    @backoff.on_predicate(backoff.constant, lambda x: x.status_code == 400, interval=5, on_backoff=backoff_handler)
+    @backoff.on_predicate(backoff.constant, lambda x: x.status_code == 400, interval=5)
     def poll_for_access_token(self):
         url = 'https://api.trakt.tv/oauth/device/token'
         payload = {
