@@ -1,10 +1,16 @@
 ---
 debug: false
 trakt:
-  username:
-  client_id:
-  client_secret:
-  access_token: # Automatically populated after successful first run
+  client_id: ############################
+  client_secret: ############################
+  # Below is filled in automatically when the script is run
+  authorization:
+    access_token:
+    token_type:
+    expires_in:
+    refresh_token:
+    scope:
+    created_at:
 plex:
   baseurl: http://localhost:32400
   token:
