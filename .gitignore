@@ -1,2 +1,4 @@
 config.yml
 *.pyc
+.vscode
+recipies/*.yml

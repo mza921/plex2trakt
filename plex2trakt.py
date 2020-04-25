@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from urlparse import urlparse
+from urllib.parse import urlparse
 from plexapi.server import PlexServer
 import json
 import os
 import time
-import trakt
+from trakt import Trakt
 import logging
 import ruamel.yaml
 import sys
+import config_tools
 
 config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.yml')
 from ruamel.yaml.util import load_yaml_guess_indent
@@ -27,8 +28,7 @@ logging.basicConfig(format=log_format)
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG if config['debug'] else logging.INFO)
 
-t = trakt.Trakt(config)
-trakt_username = config['trakt']['username']
+config_tools.TraktClient(config_file)
 plex = PlexServer(config['plex']['baseurl'], config['plex']['token'], timeout=60)
 
 list_name = recipe['name']
@@ -80,27 +80,28 @@ if plex_library.type in ('movie', 'show'):
     log.info('Trakt items to add: %d' % len(trakt_items[list_type]))
 
 # Create list if it doesn't exist
-if list_name not in [trakt_list['name'] for trakt_list in t.get_lists()]:
+if list_name not in [trakt_list.name for trakt_list in Trakt['users/me/lists'].get()]:
     log.info('%s: Creating list.' % list_name)
-    trakt_list_slug = t.create_list(list_name)['ids']['slug']
+    t = Trakt['users/me/lists'].create(list_name)
 else:
     # Get list slug to allow future API calls
-    for trakt_list in t.get_lists():
-        if trakt_list['name'] == list_name:
-            trakt_list_slug = trakt_list['ids']['slug']
+    for trakt_list in Trakt['users/me/lists'].get():
+        if trakt_list.name == list_name:
+            t = Trakt['users/me/lists/*'].get(trakt_list.id)
             break
 
 if recipe['filter_source'] == 'plex':
     log.info('%s: Adding items to list.' % list_name)
 else:
     log.debug('%s: Temporarily adding items to list.' % list_name)
-t.add_list_items(trakt_list_slug, trakt_items)
+t.add(trakt_items)
 
 # Trakt filters
 if recipe['filter_source'] == 'trakt':
     whitelist_post = {list_type: []}
     blacklist_post = {list_type: []}
-    all_trakt_items = t.get_list_items(trakt_list_slug, list_type)
+    #all_trakt_items = t.get_list_items(trakt_list_slug, list_type)
+    all_trakt_items = t.items()
     for trakt_item in all_trakt_items:
         for filter_type in ('whitelist', 'blacklist'):
             if filter_type in recipe:
@@ -122,19 +123,19 @@ if recipe['filter_source'] == 'trakt':
     final_post = {}
     final_post[list_type] = [i for i in whitelist_post[list_type] if i not in blacklist_post[list_type]]
     log.debug('%s: Deleting list.' % list_name)
-    t.delete_list(trakt_list_slug)
+    t.delete()
     log.debug('%s: Recreating list.' % list_name)
-    t.create_list(list_name)
+    t = Trakt['users/me/lists'].create(list_name)
     log.info('%s: Adding filtered items to list.' % list_name)
-    t.add_list_items(trakt_list_slug, final_post)
+    t.add(final_post)
 
-if recipe['privacy'] in ('friends', 'public'):
-    # Public required if using Python-PlexLibrary
-    log.info('%s: Updating privacy mode.' % list_name)
-    t.update_list_privacy(trakt_list_slug, privacy=recipe['privacy'])
-else:
-    # Defaults to private
-    pass
+# if recipe['privacy'] in ('friends', 'public'):
+#     # Public required if using Python-PlexLibrary
+#     log.info('%s: Updating privacy mode.' % list_name)
+#     t.update_list_privacy(trakt_list_slug, privacy=recipe['privacy'])
+# else:
+#     # Defaults to private
+#     pass
 
-list_size = len(t.get_list_items(trakt_list_slug, list_type))
+list_size = len(t.items())
 log.info('%s: List creation complete (%d %s items).' % (list_name, list_size, item_type))
