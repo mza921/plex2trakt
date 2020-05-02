@@ -100,7 +100,6 @@ t.add(trakt_items)
 if recipe['filter_source'] == 'trakt':
     whitelist_post = {list_type: []}
     blacklist_post = {list_type: []}
-    #all_trakt_items = t.get_list_items(trakt_list_slug, list_type)
     all_trakt_items = t.items(extended='full')
     for trakt_item in all_trakt_items:
         for filter_type in ('whitelist', 'blacklist'):
@@ -108,24 +107,17 @@ if recipe['filter_source'] == 'trakt':
                 for filter_name in recipe[filter_type]:
                     for filter_value in recipe[filter_type][filter_name]:
                         # Needed in case the value is empty
-                        # if trakt_item.to_dict()[filter_name]:
                         if filter_name in trakt_item.to_dict():
                             if filter_value in trakt_item.to_dict()[filter_name]:
                                 if filter_type == 'whitelist':
-                                    # whitelist_post[list_type].append({'ids': trakt_item[item_type]['ids']})
                                     whitelist_post[list_type].append({'ids': trakt_item.to_dict()['ids']})
-                                    # whitelist_post[list_type].append({'ids': trakt_item.pk})
                                 elif filter_type == 'blacklist':
-                                    # blacklist_post[list_type].append({'ids': trakt_item[item_type]['ids']})
                                     blacklist_post[list_type].append({'ids': trakt_item.to_dict()['ids']})
-                                    # blacklist_post[list_type].append({'ids': trakt_item.pk})
                                 break
             else:
                 # Include everything
                 if filter_type == 'whitelist':
-                    # whitelist_post[list_type].append({'ids': trakt_item[item_type]['ids']})
                     whitelist_post[list_type].append({'ids': trakt_item.to_dict()['ids']})
-                    # whitelist_post[list_type].append({'ids': trakt_item.pk})
 
     final_post = {}
     final_post[list_type] = [i for i in whitelist_post[list_type] if i not in blacklist_post[list_type]]
